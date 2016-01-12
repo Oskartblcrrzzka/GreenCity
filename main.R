@@ -22,3 +22,6 @@ source("./R/greencityfunction.R")
 myfunction(1)
 # greenest city in august
 myfunction(8)
+
+# load year avarage
+source("./R/yearavg.R")
