@@ -22,7 +22,7 @@ class(modisbrick)
 # selecting january
 #?stack
 stack <- stack(modisbrick)
-class(stack)
+#class(stack)
 january <- stack@layers[1]
 janbrick <- brick(january)
 #plot(janbrick)
@@ -45,21 +45,22 @@ janMask <- mask(janbrick, nlCitySinu)
 #extract!!
 januaryMean <- extract(janMask, nlCitySinu, sp=TRUE, df=TRUE,fun=mean)	
 #?extract
-plot(januaryMean)
-head(januaryMean)
+#plot(januaryMean)
+#head(januaryMean)
 
-class(januaryMean)
+#class(januaryMean)
 
 # highest greenvalue
 maximum <- max(januaryMean$January, na.rm = TRUE)
 #januaryMean$NAME_2[maximum]
-maximum
+#maximum
 maxrownr <- which(januaryMean$January == maximum[1])
 greenestcity <- januaryMean$NAME_2[maxrownr]
-plot(greenestcity)
+
+#plot(greenestcity)
 #?apply
 #?max
 
-c(januaryMean$NAME_2, januaryMean$January)
+#c(januaryMean$NAME_2, januaryMean$January)
 
 
