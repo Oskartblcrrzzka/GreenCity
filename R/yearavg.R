@@ -18,6 +18,13 @@ year <- stack
 yearbrick <- brick(year)
 
 
+?aggregate
+
+aggregate(yearbrick, mean)
+class(yearbrick)
+
+
+
 # Download City's
 nlCity <- raster::getData('GADM',country='NLD', level=2, path = "./data")
 
@@ -45,4 +52,5 @@ maxrownr <- which(yearMean$year == maximum[1])
 # lookup city name
 greenestcity <- yearMean$NAME_2[maxrownr]
 
-return(greenestcity)
+#return(greenestcity)
+greenestcity
