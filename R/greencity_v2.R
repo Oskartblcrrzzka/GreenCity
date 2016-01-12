@@ -43,11 +43,23 @@ janMask <- mask(janbrick, nlCitySinu)
 #plot(janMask)
 
 #extract!!
-JanuaryMean <- extract(janMask, nlCitySinu, sp=TRUE, df=TRUE,fun=mean)	
+januaryMean <- extract(janMask, nlCitySinu, sp=TRUE, df=TRUE,fun=mean)	
 #?extract
-#plot(JanuaryMean)
-head(JanuaryMean)
+plot(januaryMean)
+head(januaryMean)
 
+class(januaryMean)
 
+# highest greenvalue
+maximum <- max(januaryMean$January, na.rm = TRUE)
+#januaryMean$NAME_2[maximum]
+maximum
+maxrownr <- which(januaryMean$January == maximum[1])
+greenestcity <- januaryMean$NAME_2[maxrownr]
+plot(greenestcity)
+#?apply
+#?max
+
+c(januaryMean$NAME_2, januaryMean$January)
 
 
