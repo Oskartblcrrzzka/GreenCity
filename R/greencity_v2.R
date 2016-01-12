@@ -20,30 +20,33 @@ class(modisbrick)
 #nlayers(modisbrick)
 
 # selecting january
-?stack
+#?stack
 stack <- stack(modisbrick)
 class(stack)
 january <- stack@layers[1]
 janbrick <- brick(january)
-plot(janbrick)
-
+#plot(janbrick)
+#plot(stack, 1)
 # Download City's
 nlCity <- raster::getData('GADM',country='NLD', level=2, path = "./data")
-class(nlCity)
-head(nlCity@data)
+#class(nlCity)
+#head(nlCity@data)
 nlCity@data <- nlCity@data[!is.na(nlCity$NAME_2),] ## remove rows with NA
 
 # transform to the same CRS
-nlCitySinu <- spTransform(nlCity, CRS(proj4string(janbrick)))
+nlCitySinu <- spTransform(nlCity, CRS(proj4string(modisbrick)))
 
 janCrop <- crop(janbrick, nlCitySinu)
-janSub <- mask(janbrick, nlCitySinu)
-?mask()
-plot(janCrop)
-plot(janSub)
+janMask <- mask(janbrick, nlCitySinu)
+#?mask()
+#plot(janCrop)
+#plot(janMask)
 
 #extract!!
-	
+JanuaryMean <- extract(janMask, nlCitySinu, sp=TRUE, df=TRUE,fun=mean)	
+#?extract
+#plot(JanuaryMean)
+head(JanuaryMean)
 
 
 
