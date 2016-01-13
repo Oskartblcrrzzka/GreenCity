@@ -17,6 +17,7 @@ head(yeardf)
 
 
 
+
 # Download City's
 nlCity <- raster::getData('GADM',country='NLD', level=2, path = "./data")
 
