@@ -5,7 +5,10 @@
 # Date: 2016-01-12
 # Week 2, Lesson 7: Vector - Raster
 
-GreenestCityOfTheMonth <- function(monthnumber){
+GreenestCityOfTheMonth <- function(monthnumber,plot_or_not){
+	
+	monthnumber <- 7
+	plot_or_not <- TRUE
 	
 	mon <- stack@layers[monthnumber]
 	monbrick <- brick(mon)
@@ -38,6 +41,9 @@ GreenestCityOfTheMonth <- function(monthnumber){
 	greenestcity <- monMean$NAME_2[maxrownr]
 	
 	return(greenestcity)
+	
+	if (plot_or_not == TRUE) {
+		plot(monMean, col = gray.colors(20, start = 0.0, end = 0.9, gamma = 2.2, alpha = NULL))
+	}
 }
-
 

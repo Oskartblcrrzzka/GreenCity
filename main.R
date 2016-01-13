@@ -26,7 +26,6 @@ modisgrdpath <- "./data/MOD13A3.A2014001.h18v03.005.grd"
 modisbrick <- brick(modisgrdpath)
 stack <- stack(modisbrick)
 
-<<<<<<< HEAD
 # calculate greenest city in January
 GreenestCityOfTheMonth(1)
 # calculate greenest city in August
@@ -35,7 +34,12 @@ GreenestCityOfTheMonth(8)
 # calculate greenest city on average over the year
 GreenestCityOverTheYearAverage()
 
-=======
+# calculate greenest city in July and plotting it Y/N
+GreenestCityOfTheMonth(7,TRUE)
+
+# - - - - - - 
+
+
 # load myfunction
 source("./R/greencityfunction.R")
 # greenest city in january
@@ -45,4 +49,3 @@ myfunction(8)
 
 # load year avarage
 source("./R/yearavg.R")
->>>>>>> c0b22576c4701852735878329d29d6737ac4dc26

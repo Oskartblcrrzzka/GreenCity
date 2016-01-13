@@ -43,4 +43,4 @@ GreenestCityOverTheYearAverage <- function(){
 	return(greenestcity)
 }
 
-yearMean@data[27]
+
