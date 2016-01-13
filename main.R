@@ -32,7 +32,8 @@ GreenestCityOfTheMonth(1)
 GreenestCityOfTheMonth(8)
 
 # calculate greenest city on average over the year
-GreenestCityOverTheYearAverage()
+source("./R/yearavgClean.R")
+yearavarage()
 
 # calculate greenest city in July and plotting it Y/N
 GreenestCityOfTheMonth(7,TRUE)
@@ -48,4 +49,4 @@ myfunction(1)
 myfunction(8)
 
 # load year avarage
-source("./R/yearavg.R")
+source("./R/yearavgClean.R")
