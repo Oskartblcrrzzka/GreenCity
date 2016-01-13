@@ -20,7 +20,6 @@ head(yeardf)
 
 
 
-
 ?as.data.frame
 
 year <- stack@layers
