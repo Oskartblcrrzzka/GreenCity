@@ -11,11 +11,13 @@ modis <- brick(modisgrdpath)
 
 ###############
 
-yeardf <- as.data.frame(modis, na.rm=TRUE)
+yeardf <- as.data.frame(modis, na.rm=FALSE) # true
 yeardf$avg <- rowMeans(yeardf, na.rm = TRUE)
 head(yeardf)
 
+modis$avg <- rowMeans(yeardf, na.rm = FALSE)
 
+#head(modis)
 
 
 # Download City's
@@ -25,22 +27,22 @@ nlCity <- raster::getData('GADM',country='NLD', level=2, path = "./data")
 nlCity@data <- nlCity@data[!is.na(nlCity$NAME_2),]
 
 # transform to the same CRS
-nlCitySinu <- spTransform(nlCity, CRS(proj4string(modisbrick)))
+nlCitySinu <- spTransform(nlCity, CRS(proj4string(modis)))
 
 # create a crop with citys
 #janCrop <- crop(janbrick, nlCitySinu)
 
 # create a mask
-yearMask <- mask(yearbrick, nlCitySinu)
+yearMask <- mask(modis, nlCitySinu)
 
 # extract
 yearMean <- extract(yearMask, nlCitySinu, sp=TRUE, df=TRUE,fun=mean)	
 
 # highest greenvalue
-maximum <- max(yearMean$year, na.rm = TRUE)
+maximum <- max(yearMean$avg, na.rm = TRUE)
 
 # find rownumber
-maxrownr <- which(yearMean$year == maximum[1])
+maxrownr <- which(yearMean$avg == maximum[1])
 
 # lookup city name
 greenestcity <- yearMean$NAME_2[maxrownr]
