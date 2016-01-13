@@ -8,6 +8,9 @@
 rm(list = ls())  # Clear the workspace!
 ls() ## no objects left in the workspace
 
+# Installing packages
+#install.packages(c("raster")) #, "spatstat", "rgeos", "googleVis", "zoo", "lubridate"))
+
 # load librarys
 library(raster)
 library(sp)
@@ -35,7 +38,9 @@ GreenestCityOfTheMonth(8)
 GreenestCityOverTheYearAverage()
 
 # calculate greenest city in July and plotting it Y/N
-GreenestCityOfTheMonth(7,TRUE)
+GreenestCityOfTheMonth(8,TRUE)
+GreenestCityOfTheMonth(8,FALSE)
+
 
 # - - - - - - 
 

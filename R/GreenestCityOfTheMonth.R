@@ -7,8 +7,8 @@
 
 GreenestCityOfTheMonth <- function(monthnumber,plot_or_not){
 	
-	monthnumber <- 7
-	plot_or_not <- TRUE
+	# monthnumber <- 2
+	# plot_or_not <- TRUE
 	
 	mon <- stack@layers[monthnumber]
 	monbrick <- brick(mon)
@@ -40,10 +40,16 @@ GreenestCityOfTheMonth <- function(monthnumber,plot_or_not){
 	# lookup city name
 	greenestcity <- monMean$NAME_2[maxrownr]
 	
-	return(greenestcity)
+	#return(greenestcity)
 	
-	if (plot_or_not == TRUE) {
-		plot(monMean, col = gray.colors(20, start = 0.0, end = 0.9, gamma = 2.2, alpha = NULL))
-	}
-}
+p.plot <- plot(monMean, col = gray.colors(20, start = 0.0, end = 0.9,
+																					gamma = 2.2, alpha = NULL))
 
+return(list(p.plot, greenestcity))
+	
+	# if (plot_or_not == TRUE) {
+	# 	return(plot(monMean, col = gray.colors(20, start = 0.0, end = 0.9, gamma = 2.2, alpha = NULL)))
+	# 	#return(The_plot)
+	# }
+	
+}
