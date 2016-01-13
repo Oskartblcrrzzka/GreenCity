@@ -5,42 +5,52 @@
 # Date: 2016-01-12
 # Week 2, Lesson 7: Vector - Raster
 
-GreenestCityOverTheYearAverage <- function(){
+GreenestCityOverTheYearAverage <- function(plot_or_not){
 	
-	year <- stack@layers
-	yearbrick <- brick(year)
+	# convert to dataframe
+	yeardf <- as.data.frame(modisbrick, na.rm=FALSE) # true
+	#head(yeardf)
 	
-	# Download City's
-	nlCity <- raster::getData('GADM',country='NLD', level=2, path = "./data")
-	
-	# remove rows with nodata
-	nlCity@data <- nlCity@data[!is.na(nlCity$NAME_2),]
-	
-	# transform to the same CRS
-	nlCitySinu <- spTransform(nlCity, CRS(proj4string(modisbrick)))
-	
-	# create a crop with citys
-	#janCrop <- crop(janbrick, nlCitySinu)
+	# add a column with avarage row values
+	modisbrick$avg <- rowMeans(yeardf, na.rm = FALSE)
+	#head(modis)
 	
 	# create a mask
-	yearMask <- mask(yearbrick, nlCitySinu)
+	yearMask <- mask(modisbrick, nlCitySinu)
 	
 	# extract
-	yearMean <- extract(yearMask, nlCitySinu, sp=TRUE, df=TRUE, fun=mean)
-	
-	# average over the whole year
-	yearAvr <- (yearMean@data[16]+yearMean@data[17]+yearMean@data[18]+yearMean@data[19])/4
+	yearMean <- extract(yearMask, nlCitySinu, sp=TRUE, df=TRUE,fun=mean)	
 	
 	# highest greenvalue
-	maximum <- max(yearMean@data[16:27], na.rm = TRUE)
+	maximum <- max(yearMean$avg, na.rm = TRUE)
 	
 	# find rownumber
-	maxrownr <- which(yearMean@data[16:27] == maximum)
+	maxrownr <- which(yearMean$avg == maximum[1])
 	
 	# lookup city name
 	greenestcity <- yearMean$NAME_2[maxrownr]
 	
+	# create a subset of the greenest city
+	SS_greenestcity <- subset(yearMean, yearMean$NAME_2==greenestcity, drop = FALSE)
+	
+	if (plot_or_not == TRUE) {
+		
+		GetCenterX <- (bbox(SS_greenestcity)[1,1]+bbox(SS_greenestcity)[1,2])/2
+		GetCenterY <- (bbox(SS_greenestcity)[2,1]+bbox(SS_greenestcity)[2,2])/2
+
+		CenterText = list("sp.text", c(GetCenterX,GetCenterY), greenestcity)
+		p.plot <- spplot(yearMean, zcol = "avg",
+										 col.regions=colorRampPalette(c('darkred', 'red', 'orange', 'yellow','green'))(20),
+										 xlim = bbox(SS_greenestcity)[1, ]+c(-10000,10000),
+										 ylim = bbox(SS_greenestcity)[2, ]+c(-10000,10000),
+										 scales= list(draw = TRUE),
+										 sp.layout = CenterText,
+										 main = "Greenest city over the year")
+		
+		return(list(p.plot, greenestcity))
+	} else {
+		return(greenestcity)
+	}
+	
 	return(greenestcity)
 }
-
-

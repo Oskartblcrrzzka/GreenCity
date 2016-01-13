@@ -8,8 +8,8 @@
 rm(list = ls())  # Clear the workspace!
 ls() ## no objects left in the workspace
 
-# Installing packages
-#install.packages(c("raster")) #, "spatstat", "rgeos", "googleVis", "zoo", "lubridate"))
+# Installing packages (If you get an error with the 'extract' function)
+#install.packages("raster")
 
 # load librarys
 library(raster)
@@ -18,40 +18,15 @@ library(rgdal)
 library(rgeos)
 
 # referring to functions in R folder
+source("./R/Preprocessing.R")
 source("./R/GreenestCityOfTheMonth.R")
 source("./R/GreenestCityOverTheYearAverage.R")
 
-# unzip the MODUS pack
-unzip("./data/MODIS.zip", exdir = "./data")
-
-# bricking and stacking of the raster
-modisgrdpath <- "./data/MOD13A3.A2014001.h18v03.005.grd"
-modisbrick <- brick(modisgrdpath)
-stack <- stack(modisbrick)
-
-# calculate greenest city in January
-GreenestCityOfTheMonth(1)
-# calculate greenest city in August
-GreenestCityOfTheMonth(8)
-
-# calculate greenest city on average over the year
-source("./R/yearavgClean.R")
-yearavarage()
-
-# calculate greenest city in July and plotting it Y/N
+# calculate greenest city of every month and plotting it Y/N
+GreenestCityOfTheMonth(5,TRUE)
 GreenestCityOfTheMonth(8,TRUE)
-GreenestCityOfTheMonth(8,FALSE)
+GreenestCityOfTheMonth(1,FALSE)
 
-
-# - - - - - - 
-
-
-# load myfunction
-source("./R/greencityfunction.R")
-# greenest city in january
-myfunction(1)
-# greenest city in august
-myfunction(8)
-
-# load year avarage
-source("./R/yearavgClean.R")
+# calculate greenest city on average over the year, also 'plottable'!
+GreenestCityOverTheYearAverage(TRUE)
+GreenestCityOverTheYearAverage(FALSE)

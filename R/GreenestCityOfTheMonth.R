@@ -7,29 +7,15 @@
 
 GreenestCityOfTheMonth <- function(monthnumber,plot_or_not){
 	
-	# monthnumber <- 2
-	# plot_or_not <- TRUE
-	
+	# bricking the right raster
 	mon <- stack@layers[monthnumber]
 	monbrick <- brick(mon)
-	
-	# Download City's
-	nlCity <- raster::getData('GADM',country='NLD', level=2, path = "./data")
-	
-	# remove rows with nodata
-	nlCity@data <- nlCity@data[!is.na(nlCity$NAME_2),]
-	
-	# transform to the same CRS
-	nlCitySinu <- spTransform(nlCity, CRS(proj4string(modisbrick)))
-	
-	# create a crop with citys
-	#janCrop <- crop(janbrick, nlCitySinu)
 	
 	# create a mask
 	monMask <- mask(monbrick, nlCitySinu)
 	
 	# extract
-	monMean <- extract(monMask, nlCitySinu, sp=TRUE, df=TRUE,fun=mean)
+	monMean <- extract(monMask, nlCitySinu, sp=TRUE, df=TRUE, fun=mean)
 	
 	# highest greenvalue
 	maximum <- max(monMean@data[16], na.rm = TRUE)
@@ -40,16 +26,29 @@ GreenestCityOfTheMonth <- function(monthnumber,plot_or_not){
 	# lookup city name
 	greenestcity <- monMean$NAME_2[maxrownr]
 	
-	#return(greenestcity)
-	
-p.plot <- plot(monMean, col = gray.colors(20, start = 0.0, end = 0.9,
-																					gamma = 2.2, alpha = NULL))
+	# create a subset of the greenest city
+	SS_greenestcity <- subset(monMean, monMean$NAME_2==greenestcity, drop = FALSE)
 
-return(list(p.plot, greenestcity))
-	
-	# if (plot_or_not == TRUE) {
-	# 	return(plot(monMean, col = gray.colors(20, start = 0.0, end = 0.9, gamma = 2.2, alpha = NULL)))
-	# 	#return(The_plot)
-	# }
-	
+	if (plot_or_not == TRUE) {
+		
+		GetCenterX <- (bbox(SS_greenestcity)[1,1]+bbox(SS_greenestcity)[1,2])/2
+		GetCenterY <- (bbox(SS_greenestcity)[2,1]+bbox(SS_greenestcity)[2,2])/2
+		
+		MonthnumberToMonth <- c("January", "February", "March", "April", "May", "June", "July", "August",
+														"September", "October", "November", "December")
+		MonthChar <- MonthnumberToMonth[monthnumber]
+		
+		CenterText = list("sp.text", c(GetCenterX,GetCenterY), greenestcity)
+		p.plot <- spplot(monMean, zcol = MonthChar,
+					 col.regions=colorRampPalette(c('darkred', 'red', 'orange', 'yellow','green'))(20),
+					 xlim = bbox(SS_greenestcity)[1, ]+c(-10000,10000),
+					 ylim = bbox(SS_greenestcity)[2, ]+c(-10000,10000),
+					 scales= list(draw = TRUE),
+					 sp.layout = CenterText,
+					 main = paste(as.character("Greenest city of the month"),as.character(MonthChar)) )
+		
+		return(list(p.plot, greenestcity))
+	} else {
+		return(greenestcity)
+	}
 }
